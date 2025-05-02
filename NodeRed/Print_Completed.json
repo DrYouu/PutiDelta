@@ -1,0 +1,32 @@
+[
+    {
+        "id": "63b4dcc9f65389d3",
+        "type": "function",
+        "z": "5ca1d683572d4cc1",
+        "name": "Print Completed",
+        "func": "// Verifica si el modelo está definido (máquina conectada)\nif (!msg.payload || !msg.payload.fullModel || !msg.payload.fullModel.state) {\n    return [null, null];  // No hacer nada si no hay datos\n}\n\nlet currentStatus = msg.payload.fullModel.state.status;\nlet previousStatus = context.get('previousStatus') || '';\n\ncontext.set('previousStatus', currentStatus);\n\nif (previousStatus === 'processing' && currentStatus === 'idle') {\n    // Salida 1: booleano true\n    let msg1 = { payload: true };\n\n    // Salida 2: texto\n    let msg2 = { payload: \"print_completed\" };\n\n    return [msg1, msg2];\n}\n\n// No hay transición -> no enviar nada\nreturn [null, null];\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 445,
+        "y": 460,
+        "wires": [
+            [
+                "bdeb661e6c65025d"
+            ],
+            []
+        ],
+        "inputLabels": [
+            "Machine.Model"
+        ],
+        "outputLabels": [
+            "Completed.Bool",
+            "Print Completed"
+        ],
+        "icon": "font-awesome/fa-check-circle",
+        "l": false
+    }
+]
